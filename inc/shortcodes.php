@@ -507,14 +507,14 @@ class Shortcodes {
             $shortcode_tag = (new Settings())->shortcode_tag();
 
             // Start building the list of downloads
-            $output = '<ul class="erifl-user-download-history type-' . $type . '" data-user="' . $user_id . '">';
+            $output = '<ul class="erifl-user-download-history type-' . esc_attr( $type ) . '" data-user="' . esc_attr( $user_id ) . '">';
     
                 foreach ( $downloads as $download ) {
                     $file_id = absint( $download->file_id );
                     $date = sanitize_text_field( $download->last_download_time );
                     $date = gmdate( 'F j, Y g:i A', strtotime( $date ) );
 
-                    $output .= '<li data-file-id="' . $file_id . '" title="' . __( 'Last Downloaded: ', 'eri-file-library' ) . ' ' . $date . '">
+                    $output .= '<li data-file-id="' . esc_attr( $file_id ) . '" title="' . esc_html( __( 'Last Downloaded: ', 'eri-file-library' ) ) . ' ' . esc_html( $date ) . '">
                         ' . wp_kses_post( do_shortcode( '[' . $shortcode_tag . ' id="' . $file_id . '" type="' . $type . '" ignore_pre_post="true"]' ) ) . '
                     </li>';
                 }
@@ -552,7 +552,7 @@ class Shortcodes {
             $shortcode_tag = (new Settings())->shortcode_tag();
 
             // Start building the list of downloads
-            $output = '<ul class="erifl-top-downloads type-' . $type . '">';
+            $output = '<ul class="erifl-top-downloads type-' . esc_attr( $type ) . '">';
     
                 foreach ( $downloads as $download ) {
                     $file_id = absint( $download[ 'file_id' ] );
@@ -564,8 +564,8 @@ class Shortcodes {
                         $incl_count = '';
                     }
 
-                    $output .= '<li data-file-id="' . $file_id . '">
-                        ' . wp_kses_post( do_shortcode( '[' . $shortcode_tag . ' id="' . $file_id . '" type="' . $type . '" ignore_pre_post="true"]' ) ) . $incl_count .'
+                    $output .= '<li data-file-id="' . esc_attr( $file_id ) . '">
+                        ' . wp_kses_post( do_shortcode( '[' . $shortcode_tag . ' id="' . $file_id . '" type="' . $type . '" ignore_pre_post="true"]' ) ) . wp_kses_post( $incl_count ) .'
                     </li>';
                 }
     
@@ -660,14 +660,15 @@ class Shortcodes {
 
             // ID
             $incl_id = $unique_id ? ' id="' . $unique_id . '"' : '';
+            dpr( $incl_id );
 
             // Start building the list of downloads
-            $output = '<ul' . $incl_id . ' class="erifl-file-list type-' . $type . '">';
+            $output = '<ul' . wp_kses_post( $incl_id ) . ' class="erifl-file-list type-' . esc_attr( $type  ). '">';
     
                 foreach ( $files as $file ) {
                     $file_id = absint( $file[ 'ID' ] );
                     
-                    $output .= '<li data-file-id="' . $file_id . '">
+                    $output .= '<li data-file-id="' . esc_attr( $file_id ) . '">
                         ' . wp_kses_post( do_shortcode( '[' . $shortcode_tag . ' id="' . $file_id . '" type="' . $type . '" ignore_pre_post="true"]' ) ) . '
                     </li>';
                 }
@@ -692,7 +693,7 @@ class Shortcodes {
                 }
             
                 // Add pagination to the output
-                $output .= '<div class="erifl-pagination">' . $pagination . '</div>';
+                $output .= '<div class="erifl-pagination">' . wp_kses_post( $pagination ) . '</div>';
             }
             
 
