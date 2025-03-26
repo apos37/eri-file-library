@@ -1,0 +1,68 @@
+h2 {
+    margin: 3rem 0 1rem 0;
+}
+
+.report-section {
+    margin-bottom: 2rem;
+}
+
+#downloads-by-taxonomy {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: calc(100% - 40px);
+}
+
+#erifl-report .widefat {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#erifl-report .widefat th, 
+#erifl-report .widefat td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#erifl-report .widefat .id { 
+    width: 120px; 
+}
+
+#erifl-report .widefat .item { 
+    width: auto; 
+}
+
+#erifl-report .widefat .count { 
+    width: 40%; 
+}
+
+#erifl-report .widefat th {
+    background-color: #1E427F;
+    color: white;
+    font-weight: bold;
+}
+
+#erifl-report .widefat tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#erifl-report .widefat tr:hover {
+    background-color: #eaeaea;
+}
+
+#erifl-report .widefat a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+#erifl-report .widefat a:hover {
+    text-decoration: underline;
+}
+
+#erifl-export-counts-btn {
+    float: right;
+    margin-top: -38px;
+}

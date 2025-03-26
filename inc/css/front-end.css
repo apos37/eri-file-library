@@ -1,0 +1,169 @@
+.erifl-file.link {
+    display: inline-block;
+}
+
+.erifl-file.button {
+    font-family: inherit;
+    padding: 10px;
+    display: inline-flex;
+    gap: 5px;
+}
+
+.erifl-file.button img.erifl-icon,
+.erifl-file.full img.erifl-icon {
+    height: 16px;
+    width: auto;
+}
+
+.erifl-file.button span,
+.erifl-file.button img.erifl-icon {
+    line-height: 1;
+}
+
+.erifl-file.full span,
+.erifl-file.full a,
+.erifl-top-downloads.type-full span,
+.erifl-top-downloads.type-full a {
+    line-height: 1.5;
+}
+
+.erifl-file.full .erifl-desc:before {
+    content: ' - ';
+}
+
+.erifl-file.icon img.erifl-icon {
+    height: 70px;
+    width: auto;
+}
+
+a.erifl-file.icon .erifl-icon {
+    font-size: 70px;
+}
+
+a.erifl-file.icon {
+    text-decoration: none !important;
+}
+
+.erifl-file.post {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+}
+
+.erifl-file.post .erifl-image {
+    display: block;
+    width: 70px;
+    height: 70px;
+    margin-right: 15px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* .erifl-file.post .erifl-image:has(.erifl-icon) {
+    width: auto;
+    height: auto;
+} */
+
+.erifl-file.post .erifl-icon {
+    font-size: 70px;
+    width: 100%;
+    max-height: 100%;
+}
+
+.erifl-file.post .erifl-content {
+    flex-grow: 1;
+}
+
+.erifl-file.post .erifl-title h4 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.erifl-file.post .erifl-title a {
+    text-decoration: none;
+}
+
+.erifl-file.post .erifl-title a:hover {
+    text-decoration: underline;
+}
+
+.erifl-file.post .erifl-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.erifl-file.post .erifl-meta span {
+    display: inline-block;
+    font-size: inherit;
+    color: #666;
+}
+
+.erifl-file.post .erifl-count {
+    color: #000000;
+}
+
+.erifl-file.post .erifl-desc {
+    display: block;
+    font-size: inherit;
+    color: #333;
+}
+
+.erifl-top-downloads .erifl-downloads:before {
+    content: ' - ';
+}
+
+.erifl-user-download-history.type-button,
+.erifl-user-download-history.type-full,
+.erifl-user-download-history.type-post,
+.erifl-top-downloads.type-button,
+.erifl-top-downloads.type-full,
+.erifl-top-downloads.type-post,
+.erifl-file-list.type-button,
+.erifl-file-list.type-full,
+.erifl-file-list.type-post {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+
+.erifl-formats {
+    text-transform: uppercase;
+}
+
+.erifl-pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.erifl-pagination a,
+.erifl-pagination span {
+    font-size: 14px;
+    padding: 5px 10px;
+    margin: 0 5px;
+    text-decoration: none !important;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    display: inline-block;
+    font-family: inherit;
+    font-weight: bold;
+}
+
+.erifl-pagination .erifl-pagination-current {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.erifl-pagination .erifl-pagination-prev:disabled,
+.erifl-pagination .erifl-pagination-next:disabled {
+    color: #aaa;
+    cursor: not-allowed;
+}

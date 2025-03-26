@@ -1,0 +1,54 @@
+.requirements-selection, 
+.requirements-selection input, 
+.requirements-labels, 
+.requirements-selection label {
+    display: inline !important;
+}
+
+.erifl-labels {
+    display: inline-flex;
+    align-items: center;
+}
+
+.requirements-selection label {
+    margin: 0 !important;
+    line-height: 1 !important;
+}
+
+.requirements-selection {
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+.required-roles-label {
+    margin-bottom: 10px;
+}
+
+fieldset.inline-edit-col-left.col-requirements {
+    margin-top: 20px !important;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    padding: 7px !important;
+    background: #eee;
+}
+
+.inline-edit-col.quick-edit-requirements.option {
+    margin-top: 10px;
+}
+
+tr:has(td.filesize .no-file-found) { 
+    background: #ff0000 !important; 
+    color: #ffffff !important;
+}
+
+tr:has(td.filesize .no-file-found) th,
+tr:has(td.filesize .no-file-found) td {
+    border-bottom: 1px solid #ffffff !important;
+}
+
+tr:has(td.filesize .no-file-found) td,
+tr:has(td.filesize .no-file-found) td a, 
+tr:has(td.filesize .no-file-found) td .button-link,
+tr:has(td.filesize .no-file-found) td .button-link:focus { 
+    color: #ffffff !important; 
+}

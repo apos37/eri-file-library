@@ -1,0 +1,19 @@
+h2 { 
+    margin: 3rem 0 1rem 0; 
+}
+
+#example {
+    display: inline-block;
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
+#example-format {
+    text-transform: uppercase;
+}
+
+textarea {
+    width: 400px;
+    height: 200px;
+}
