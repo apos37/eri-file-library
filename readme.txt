@@ -57,14 +57,16 @@ Yes, there are plenty. The following hooks are available:
 
 == Changelog ==
 = 1.0.4 =
-* Fix: Requirements from WP.org repo
+* Update: Changed author name from Apos37 to WordPress Enhanced, new Author URI
+* Fix: Optimizations
 
 = 1.0.3 =
-* Fix: Requirements from WP.org repo
+* Fix: Translations
 * Fix: About page plugins not showing up on some sites
 
 = 1.0.2 =
 * Fix: Requirements from WP.org repo
 
 = 1.0.1 =
-* Initial release.
+* Release to WP.org repo on March 27, 2025
+* Initial release and testing on October 15, 2024

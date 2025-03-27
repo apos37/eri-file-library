@@ -9,6 +9,7 @@
  * Requires PHP:        7.4
  * Author:              WordPress Enhanced
  * Author URI:          https://wordpressenhanced.com/
+ * Support URI:         https://discord.gg/3HnzNEJVnR
  * Text Domain:         eri-file-library
  * License:             GPLv2 or later
  * License URI:         http://www.gnu.org/licenses/gpl-2.0.txt
@@ -40,6 +41,7 @@ $plugin_data = get_file_data( __FILE__, [
     'textdomain'   => 'Text Domain',
     'author'       => 'Author',
     'author_uri'   => 'Author URI',
+    'support_uri'  => 'Support URI',
 ] );
 
 // Versions
@@ -54,7 +56,7 @@ define( 'ERIFL__TEXTDOMAIN', str_replace( '-', '_', ERIFL_TEXTDOMAIN ) );
 define( 'ERIFL_AUTHOR', $plugin_data[ 'author' ] );
 define( 'ERIFL_AUTHOR_URI', $plugin_data[ 'author_uri' ] );
 define( 'ERIFL_PLUGIN_URI', $plugin_data[ 'plugin_uri' ] );
-define( 'ERIFL_DISCORD_SUPPORT_URL', 'https://discord.gg/3HnzNEJVnR' );
+define( 'ERIFL_DISCORD_SUPPORT_URL', $plugin_data[ 'support_uri' ] );
 
 // Paths
 define( 'ERIFL_BASENAME', plugin_basename( __FILE__ ) );                                        //: text-domain/text-domain.php

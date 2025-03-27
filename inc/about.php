@@ -101,6 +101,7 @@ class About {
                 <div id="the-list">
                     <?php $this->plugin_card( 'broken-link-notifier' ); ?>
                     <?php $this->plugin_card( 'admin-help-docs' ); ?>
+                    <?php $this->plugin_card( 'clear-cache-everywhere' ); ?>
                     <?php $this->plugin_card( 'dev-debug-tools' ); ?>
                     <?php if ( is_plugin_active( 'gravityforms/gravityforms.php' ) ) { ?>
                         <?php $this->plugin_card( 'gf-tools' ); ?>
