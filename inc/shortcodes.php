@@ -660,7 +660,6 @@ class Shortcodes {
 
             // ID
             $incl_id = $unique_id ? ' id="' . $unique_id . '"' : '';
-            dpr( $incl_id );
 
             // Start building the list of downloads
             $output = '<ul' . wp_kses_post( $incl_id ) . ' class="erifl-file-list type-' . esc_attr( $type  ). '">';

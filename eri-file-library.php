@@ -3,12 +3,12 @@
  * Plugin Name:         ERI File Library
  * Plugin URI:          https://github.com/apos37/eri-file-library
  * Description:         Easily upload, manage, and track downloads of your shared files
- * Version:             1.0.4
+ * Version:             1.0.5
  * Requires at least:   6.0
- * Tested up to:        6.7
+ * Tested up to:        6.8
  * Requires PHP:        7.4
- * Author:              WordPress Enhanced
- * Author URI:          https://wordpressenhanced.com/
+ * Author:              PluginRx
+ * Author URI:          https://pluginrx.com/
  * Support URI:         https://discord.gg/3HnzNEJVnR
  * Text Domain:         eri-file-library
  * License:             GPLv2 or later

@@ -2,9 +2,9 @@
 Contributors: apos37
 Tags: file manager, file sharing, download, tracking, links
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -28,7 +28,7 @@ This plugin does not have the option to sell downloads, but it can be integrated
 
 == Frequently Asked Questions ==
 = How do I track downloads? =
-Download counts are automatically recorded for each file. If you want to additionally track user interactions and dates, you will need to enable it. Navigate to **ERI File Library** > **Settings**, and select the "**Enable User Tracking**" option. Doing so will create a new table in your database where each download is logged. "Downloads" and "Report" pages will appear under ERI File Library in the admin menu where you can see your collected data.
+Download counts are automatically recorded for each file. If you want to additionally track user interactions and dates, you will need to enable it. Navigate to **Files** > **Settings**, and select the "**Enable User Tracking**" option. Doing so will create a new table in your database where each download is logged. "Downloads" and "Report" pages will appear under Files in the admin menu where you can see your collected data.
 
 = Are there hooks available for Developers? =
 Yes, there are plenty. The following hooks are available:
@@ -56,6 +56,12 @@ Yes, there are plenty. The following hooks are available:
 9. Shortcodes with examples 4
 
 == Changelog ==
+= 1.0.5 =
+* Update: Updated author name and website per WordPress trademark policy
+
+= 1.0.4.1 =
+* Fix: Test code visible
+
 = 1.0.4 =
 * Update: Changed author name from Apos37 to WordPress Enhanced, new Author URI
 * Fix: Optimizations
