@@ -1,15 +1,15 @@
 <?php
 /**
  * Plugin Name:         ERI File Library
- * Plugin URI:          https://github.com/apos37/eri-file-library
+ * Plugin URI:          https://pluginrx.com/plugin/eri-file-library/
  * Description:         Easily upload, manage, and track downloads of your shared files
- * Version:             1.0.5
+ * Version:             1.1.0
  * Requires at least:   6.0
  * Tested up to:        6.8
  * Requires PHP:        7.4
  * Author:              PluginRx
  * Author URI:          https://pluginrx.com/
- * Support URI:         https://discord.gg/3HnzNEJVnR
+ * Discord URI:         https://discord.gg/3HnzNEJVnR
  * Text Domain:         eri-file-library
  * License:             GPLv2 or later
  * License URI:         http://www.gnu.org/licenses/gpl-2.0.txt
@@ -41,7 +41,7 @@ $plugin_data = get_file_data( __FILE__, [
     'textdomain'   => 'Text Domain',
     'author'       => 'Author',
     'author_uri'   => 'Author URI',
-    'support_uri'  => 'Support URI',
+    'discord_uri'  => 'Discord URI'
 ] );
 
 // Versions
@@ -56,7 +56,10 @@ define( 'ERIFL__TEXTDOMAIN', str_replace( '-', '_', ERIFL_TEXTDOMAIN ) );
 define( 'ERIFL_AUTHOR', $plugin_data[ 'author' ] );
 define( 'ERIFL_AUTHOR_URI', $plugin_data[ 'author_uri' ] );
 define( 'ERIFL_PLUGIN_URI', $plugin_data[ 'plugin_uri' ] );
-define( 'ERIFL_DISCORD_SUPPORT_URL', $plugin_data[ 'support_uri' ] );
+define( 'ERIFL_GUIDE_URL', ERIFL_AUTHOR_URI . 'guide/plugin/' . ERIFL_TEXTDOMAIN . '/' );
+define( 'ERIFL_DOCS_URL', ERIFL_AUTHOR_URI . 'docs/plugin/' . ERIFL_TEXTDOMAIN . '/' );
+define( 'ERIFL_SUPPORT_URL', ERIFL_AUTHOR_URI . 'support/plugin/' . ERIFL_TEXTDOMAIN . '/' );
+define( 'ERIFL_DISCORD_URL', $plugin_data[ 'discord_uri' ] );
 
 // Paths
 define( 'ERIFL_BASENAME', plugin_basename( __FILE__ ) );                                        //: text-domain/text-domain.php

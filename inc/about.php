@@ -79,15 +79,13 @@ class About {
 
             <br><br>
             <h2><?php echo esc_html__( 'Plugin Support', 'eri-file-library' ); ?></h2>
-            <br><img class="admin_helpbox_title" src="<?php echo esc_url( ERIFL_IMG_PATH ); ?>discord.png" width="auto" height="100">
-            <p><?php echo esc_html__( 'If you need assistance with this plugin or have suggestions for improving it, please join the Discord server below.', 'eri-file-library' ); ?></p>
-            <?php // translators: 1: Text for the button (default: Join Our Support Server)
-            echo '<a class="button button-primary" href="'.esc_url( ERIFL_DISCORD_SUPPORT_URL ).'" target="_blank">'.esc_html__( 'Join Our Support Server', 'eri-file-library' ).' »</a><br>'; ?>
-
-            <br>
-            <p><?php echo esc_html__( 'Or if you would rather get support on WordPress.org, you can do so here:', 'eri-file-library' ); ?></p>
-            <?php // translators: 1: Text for the button (default: WordPress.org Plugin Support Page)
-            echo '<a class="button button-primary" href="https://wordpress.org/support/plugin/' . esc_attr( ERIFL_TEXTDOMAIN ) . '/" target="_blank">'.esc_html__( 'WordPress.org Plugin Support Page', 'eri-file-library' ).' »</a><br>'; ?>
+            <?php
+            echo '<a class="button button-primary" href="'.esc_url( ERIFL_GUIDE_URL ).'" target="_blank">'.esc_html( __( 'How-To Guide', 'eri-file-library' ) ).' »</a><br><br>';
+            echo '<a class="button button-primary" href="'.esc_url( ERIFL_DOCS_URL ).'" target="_blank">'.esc_html( __( 'Developer Docs', 'eri-file-library' ) ).' »</a><br><br>';
+            echo '<a class="button button-primary" href="'.esc_url( ERIFL_SUPPORT_URL ).'" target="_blank">'.esc_html( __( 'Website Support Forum', 'eri-file-library' ) ).' »</a><br><br>';
+            echo '<a class="button button-primary" href="'.esc_url( ERIFL_DISCORD_URL ).'" target="_blank">'.esc_html( __( 'Discord Support Server', 'eri-file-library' ) ).' »</a><br><br>'; 
+            echo '<a class="button button-primary" href="https://wordpress.org/support/plugin/admin-help-docs/" target="_blank">'.esc_html( __( 'WordPress.org Plugin Support Page', 'eri-file-library' ) ).' »</a><br>';
+            ?>
 
             <br><br><br>
             <h2><?php echo esc_html__( 'Like This Plugin?', 'eri-file-library' ); ?></h2>
@@ -96,11 +94,10 @@ class About {
             echo '<a class="button button-primary" href="https://wordpress.org/support/plugin/' . esc_attr( ERIFL_TEXTDOMAIN ) . '/reviews/" target="_blank">'.esc_html( __( 'Rate and Review on WordPress.org', 'eri-file-library' ) ).' »</a><br>'; ?>
 
             <br><br><br>
-            <h2><?php echo esc_html__( 'Try My Other Plugins', 'eri-file-library' ); ?></h2>
+            <h2><?php echo esc_html__( 'Try Our Other Plugins', 'eri-file-library' ); ?></h2>
             <div class="wp-list-table widefat plugin-install">
                 <div id="the-list">
                     <?php $this->plugin_card( 'broken-link-notifier' ); ?>
-                    <?php $this->plugin_card( 'admin-help-docs' ); ?>
                     <?php $this->plugin_card( 'clear-cache-everywhere' ); ?>
                     <?php $this->plugin_card( 'dev-debug-tools' ); ?>
                     <?php if ( is_plugin_active( 'gravityforms/gravityforms.php' ) ) { ?>

@@ -4,7 +4,7 @@ Tags: file manager, file sharing, download, tracking, links
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -42,7 +42,9 @@ Yes, there are plenty. The following hooks are available:
 * `erifl_ip_lookup_path` ( String $ip_address_link ) — Filter the link used for looking up a logged-out user's IP address on the Downloads page.
 * `erifl_where_used_post_types` ( Array $post_types ) — Filter the post types used to look for where the shortcode is used. This feature is located at the bottom of the file edit screen.
 * `erifl_post_meta` ( Array $meta ) — Filter the "post" display type meta html.
-* `erifl_custom_base_path` (String $base_path, Boolean $abspath) — Filter the base path. $base_path is the original base path (either file system or URL), and $abspath indicates whether the path is an absolute path (true) or a URL (false). You should return the appropriate path based on the value of $abspath.
+
+= Where can I request features and get further support? =
+We recommend using our [website support forum](https://pluginrx.com/support/plugin/eri-file-library/) as the primary method for requesting features and getting help. You can also reach out via our [Discord support server](https://discord.gg/3HnzNEJVnR) or the [WordPress.org support forum](https://wordpress.org/support/plugin/eri-file-library/), but please note that WordPress.org doesn’t always notify us of new posts, so it’s not ideal for time-sensitive issues.
 
 == Screenshots ==
 1. File Library admin list table
@@ -56,6 +58,9 @@ Yes, there are plenty. The following hooks are available:
 9. Shortcodes with examples 4
 
 == Changelog ==
+= 1.1.0 =
+* Update: New support links
+
 = 1.0.5 =
 * Update: Updated author name and website per WordPress trademark policy
 
