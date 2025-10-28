@@ -46,6 +46,7 @@ class Settings {
     public $option_add_taxonomies = 'erifl_add_taxonomies';
     public $option_admin_menu_label = 'erifl_admin_menu_label';
     public $option_no_access_msg = 'erifl_no_access_msg';
+    public $option_combine_rate_limiter = 'erifl_combine_rate_limiter';
     public $option_example = 'erifl_example';
     public $option_pre_title = 'erifl_pre_title';
     public $option_post_title = 'erifl_post_title';
@@ -233,6 +234,14 @@ class Settings {
                 'sanitize'  => 'sanitize_text_field', 
                 'section'   => 'general', 
                 'comments'  => '<br><em>' . __( 'Optionally add existing taxonomies here by including their slugs in lowercase separated by commas (e.g. category, post_tag).', 'eri-file-library' ) . '</em>'
+            ],
+            [
+                'key'       => $this->option_combine_rate_limiter,
+                'title'     => __( 'Combine All Downloads for Rate Limiting', 'eri-file-library' ),
+                'type'      => 'checkbox',
+                'sanitize'  => [ $this, 'sanitize_checkbox' ],
+                'section'   => 'general',
+                'comments'  => '<br><em>' . __( 'Controls how the download rate limiter is applied. When unchecked, each file is tracked separately (per-file limits). When checked, all downloads are combined, and the limit applies across all files together.', 'eri-file-library' ) . '</em>'
             ],
             [ 
                 'key'       => $this->option_pre_title, 

@@ -33,19 +33,11 @@ new Shortcodes();
 class Shortcodes {
 
     /**
-     * Rate limit combined files
-     *
-     * @var bool
-     */
-    private $rate_limit_combined_files = false;
-
-
-    /**
      * Rate limit time window
      *
      * @var int
      */
-    private $rate_limit_time_window = 60; // seconds
+    private $rate_limit_time_window = 60;
 
 
     /**
@@ -76,6 +68,10 @@ class Shortcodes {
      * Constructor
      */
     public function __construct() {
+
+        // Allow filters
+        $this->rate_limit_time_window = apply_filters( 'erifl_rate_limit_time_window', $this->rate_limit_time_window );
+        $this->rate_limit_max_requests = apply_filters( 'erifl_rate_limit_max_requests', $this->rate_limit_max_requests );
         
 		// File shortcode
         add_shortcode( (new Settings())->shortcode_tag(), [ $this, 'file' ] );
@@ -438,7 +434,7 @@ class Shortcodes {
                 $user_ip = !$user_id ? $HELPERS->get_user_ip() : false;
 
                 // Rate limit check
-                $include_file_id = ! apply_filters( 'erifl_rate_limit_combined_files', $this->rate_limit_combined_files );
+                $include_file_id = ! filter_var( get_option( (new Settings())->option_combine_rate_limiter ), FILTER_VALIDATE_BOOLEAN );
                 $file_id_for_rate_limit = $include_file_id ? $file_id : null;
                 if ( ! (new Helpers())->rate_limit_check( $user_id, $user_ip, $file_id_for_rate_limit, $this->rate_limit_max_requests, $this->rate_limit_time_window ) ) {
                     wp_send_json_error( [
