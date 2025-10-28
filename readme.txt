@@ -59,6 +59,7 @@ We recommend using our [website support forum](https://pluginrx.com/support/plug
 
 == Changelog ==
 = 1.1.1 =
+* Update: Added a rate limiter
 * Fix: Unauthorized access due to missing capability check in AJAX action (props Athiwat Tiprasaharn via WordFence Vulnerability Report)
 
 = 1.1.0 =

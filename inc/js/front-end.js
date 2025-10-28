@@ -26,9 +26,10 @@ jQuery( $ => {
             dataType: 'json',
             url: eri_file_library.ajaxurl,
             data: { 
-                action: 'erifl_file', 
+                action: 'erifl_file',
                 fileID: fileID,
-                nonce: nonce
+                nonce: nonce,
+                actionName: eri_file_library.action
             },
             success: function( response ) {
                 if ( response.success && response.data.type ) {
@@ -51,11 +52,28 @@ jQuery( $ => {
                 }
             },
             error: function( jqXHR, textStatus, errorThrown ) {
-                console.log( 'AJAX error: ', textStatus, errorThrown );
+                console.log( 'AJAX error:', textStatus, errorThrown, jqXHR );
+
+                let message = 'An unexpected error occurred. Please try again.';
+
+                if ( jqXHR.responseJSON && jqXHR.responseJSON.data && jqXHR.responseJSON.data.message ) {
+                    message = jqXHR.responseJSON.data.message;
+                } else if ( jqXHR.responseText ) {
+                    // Fallback: try to parse JSON from responseText
+                    try {
+                        let resp = JSON.parse( jqXHR.responseText );
+                        if ( resp.data && resp.data.message ) {
+                            message = resp.data.message;
+                        }
+                    } catch ( e ) {
+                        message = jqXHR.responseText;
+                    }
+                }
+
                 if ( href && href !== '#' ) {
                     window.open( href );
                 } else {
-                    alert( 'An unexpected error occurred. Please try again.' );
+                    alert( message );
                 }
             },
             complete: function() {

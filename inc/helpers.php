@@ -303,4 +303,45 @@ class Helpers {
         return 'Unknown';
     } // End get_user_ip()
 
+
+    /**
+     * Rate limit check
+     *
+     * @param int $user_id
+     * @param string $user_ip
+     * @param int $file_id
+     * @param int $limit
+     * @param int $period
+     * @return boolean
+     */
+    public function rate_limit_check( $user_id, $user_ip, $file_id = null, $limit = 5, $period = 60 ) {
+        // Build key: include file_id if set
+        $key_base = $user_id ? 'erifl_rl_user_' . $user_id : 'erifl_rl_ip_' . $user_ip;
+        $key = $file_id ? $key_base . '_file_' . $file_id : $key_base;
+
+        // Get current download history from transient
+        $downloads = get_transient( $key );
+        if ( ! is_array( $downloads ) ) {
+            $downloads = [];
+        }
+
+        $now = time();
+        // Remove expired entries
+        $downloads = array_filter( $downloads, function( $t ) use ( $now, $period ) {
+            return ( $t > $now - $period );
+        } );
+
+        // Check limit
+        if ( count( $downloads ) >= $limit ) {
+            return false;
+        }
+
+        // Add current timestamp and store back
+        $downloads[] = $now;
+        set_transient( $key, $downloads, $period );
+
+        return true;
+    } // End rate_limit_check()
+
+
 }

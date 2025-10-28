@@ -33,6 +33,30 @@ new Shortcodes();
 class Shortcodes {
 
     /**
+     * Rate limit combined files
+     *
+     * @var bool
+     */
+    private $rate_limit_combined_files = false;
+
+
+    /**
+     * Rate limit time window
+     *
+     * @var int
+     */
+    private $rate_limit_time_window = 60; // seconds
+
+
+    /**
+     * Rate limit max requests
+     *
+     * @var int
+     */
+    private $rate_limit_max_requests = 5;
+
+
+    /**
      * Ajax action
      *
      * @var string
@@ -73,6 +97,16 @@ class Shortcodes {
         add_shortcode( 'erifl_file_list', [ $this, 'file_list' ] );
 
     } // End __construct()
+
+
+    /**
+     * Generate a nonce action
+     *
+     * @return string
+     */
+    private function generate_nonce_action() {
+        return $this->nonce . '_' . wp_generate_password( 12, false, false );
+    } // End generate_nonce_action()
 
 
 	/**
@@ -375,7 +409,8 @@ class Shortcodes {
      */
     public function ajax() {
         // Check the nonce
-        check_ajax_referer( $this->nonce, 'nonce' );
+        $nonce_action = isset( $_REQUEST[ 'actionName' ] ) ? sanitize_text_field( $_REQUEST[ 'actionName' ] ) : '';
+        check_ajax_referer( $nonce_action, 'nonce' );
 
         // Log errors here
         $errors = [];
@@ -401,6 +436,15 @@ class Shortcodes {
 
                 // Get the current user's ip
                 $user_ip = !$user_id ? $HELPERS->get_user_ip() : false;
+
+                // Rate limit check
+                $include_file_id = ! apply_filters( 'erifl_rate_limit_combined_files', $this->rate_limit_combined_files );
+                $file_id_for_rate_limit = $include_file_id ? $file_id : null;
+                if ( ! (new Helpers())->rate_limit_check( $user_id, $user_ip, $file_id_for_rate_limit, $this->rate_limit_max_requests, $this->rate_limit_time_window ) ) {
+                    wp_send_json_error( [
+                        'message' => __( 'Download limit reached. Please wait a moment before trying again.', 'eri-file-library' )
+                    ], 429 );
+                }
 
                 /**
                  * COUNT THE # OF DOWNLOADS ON POST META
@@ -471,12 +515,16 @@ class Shortcodes {
             return;
         }
 
+        // Nonce
+        $nonce = $this->generate_nonce_action();
+
         // JS
         $js_handle = ERIFL__TEXTDOMAIN . '_script';
         wp_register_script( $js_handle, ERIFL_JS_PATH . 'front-end.js', [ 'jquery' ], ERIFL_SCRIPT_VERSION, true );
         wp_localize_script( $js_handle, ERIFL__TEXTDOMAIN, [
-            'nonce'       => wp_create_nonce( $this->nonce ),
-            'ajaxurl'     => admin_url( 'admin-ajax.php' ) 
+            'nonce'       => wp_create_nonce( $nonce ),
+            'action'      => $nonce,
+            'ajaxurl'     => admin_url( 'admin-ajax.php' )
         ] );
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( $js_handle );
