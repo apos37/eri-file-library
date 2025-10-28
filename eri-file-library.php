@@ -3,7 +3,7 @@
  * Plugin Name:         ERI File Library
  * Plugin URI:          https://pluginrx.com/plugin/eri-file-library/
  * Description:         Easily upload, manage, and track downloads of your shared files
- * Version:             1.1.0
+ * Version:             1.1.1
  * Requires at least:   6.0
  * Tested up to:        6.8
  * Requires PHP:        7.4

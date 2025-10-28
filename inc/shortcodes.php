@@ -389,8 +389,17 @@ class Shortcodes {
         if ( $file_id ) {
             if ( $file = $POST_TYPE->get_file( $file_id ) ) {
 
-                // Get the current user
+                // Get the current user ID
                 $user_id = get_current_user_id();
+
+                // Ensure the requesting user (logged-in or not) meets file requirements
+                if ( ! $POST_TYPE->user_meets_requirements( $file_id, $user_id ) ) {
+                    wp_send_json_error( [
+                        'message' => __( 'You do not have permission to access this file.', 'eri-file-library' )
+                    ] );
+                }
+
+                // Get the current user's ip
                 $user_ip = !$user_id ? $HELPERS->get_user_ip() : false;
 
                 /**
