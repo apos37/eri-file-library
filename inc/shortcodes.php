@@ -454,7 +454,10 @@ class Shortcodes {
         }
 
         // Failure
-        wp_send_json_error( ERIFL_NAME . ': ' . implode( ' | ', $errors ) );
+        wp_send_json_error( [
+            'message' => ERIFL_NAME . ': ' . implode( ' | ', $errors ),
+            'errors'  => $errors
+        ] );
     } // End ajax()
     
     
