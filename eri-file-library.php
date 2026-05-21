@@ -3,9 +3,9 @@
  * Plugin Name:         ERI File Library
  * Plugin URI:          https://pluginrx.com/plugin/eri-file-library/
  * Description:         Easily upload, manage, and track downloads of your shared files
- * Version:             1.1.1
+ * Version:             1.1.3
  * Requires at least:   6.0
- * Tested up to:        6.8
+ * Tested up to:        7.0
  * Requires PHP:        7.4
  * Author:              PluginRx
  * Author URI:          https://pluginrx.com/
@@ -46,7 +46,7 @@ $plugin_data = get_file_data( __FILE__, [
 
 // Versions
 define( 'ERIFL_VERSION', $plugin_data[ 'version' ] );
-define( 'ERIFL_SCRIPT_VERSION', ERIFL_VERSION );                                                // REPLACE WITH time() DURING TESTING
+define( 'ERIFL_SCRIPT_VERSION', time() );                                                // REPLACE WITH time() DURING TESTING
 define( 'ERIFL_MIN_PHP_VERSION', $plugin_data[ 'requires_php' ] );
 
 // Names
@@ -78,6 +78,7 @@ define( 'ERIFL_SETTINGS_SCREEN_ID', 'erifl-files_page_' . ERIFL__TEXTDOMAIN . '_
 define( 'ERIFL_DOWNLOADS_SCREEN_ID', 'erifl-files_page_' . ERIFL__TEXTDOMAIN . '_downloads' );
 define( 'ERIFL_REPORT_SCREEN_ID', 'erifl-files_page_' . ERIFL__TEXTDOMAIN . '_report' );
 define( 'ERIFL_ABOUT_SCREEN_ID', 'erifl-files_page_' . ERIFL__TEXTDOMAIN . '_about' );
+define( 'ERIFL_MIGRATE_SCREEN_ID', 'erifl-files_page_' . ERIFL__TEXTDOMAIN . '_migrate' );
 
 
 /**
@@ -94,3 +95,4 @@ require_once ERIFL_INCLUDES_ABSPATH . 'post-type.php';
 require_once ERIFL_INCLUDES_ABSPATH . 'taxonomies.php';
 require_once ERIFL_INCLUDES_ABSPATH . 'shortcodes.php';
 require_once ERIFL_INCLUDES_ABSPATH . 'about.php';
+// require_once ERIFL_INCLUDES_ABSPATH . 'migrate.php';

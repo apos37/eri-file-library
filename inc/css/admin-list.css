@@ -47,7 +47,7 @@ tr:has(td.filesize .no-file-found) td {
 }
 
 tr:has(td.filesize .no-file-found) td,
-tr:has(td.filesize .no-file-found) td a, 
+tr:has(td.filesize .no-file-found) td a:not(.click-to-copy), 
 tr:has(td.filesize .no-file-found) td .button-link,
 tr:has(td.filesize .no-file-found) td .button-link:focus { 
     color: #ffffff !important; 

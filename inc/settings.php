@@ -43,6 +43,8 @@ class Settings {
      *
      * @var string
      */
+    public $option_disable_resource_types = 'erifl_disable_resource_types';
+    public $option_disable_target_audiences = 'erifl_disable_target_audiences';
     public $option_add_taxonomies = 'erifl_add_taxonomies';
     public $option_admin_menu_label = 'erifl_admin_menu_label';
     public $option_no_access_msg = 'erifl_no_access_msg';
@@ -56,7 +58,9 @@ class Settings {
     public $option_folder = 'erifl_folder';
     public $option_include_urls = 'erifl_include_urls';
     public $option_tracking = 'erifl_tracking';
+    public $option_logged_out_tracking = 'erifl_logged_out_tracking';
     public $option_delete_table = 'erifl_delete_table';
+    public $option_file_shortcode_class = 'erifl_file_shortcode_class';
 
 
     /**
@@ -177,6 +181,7 @@ class Settings {
          */
         $sections = [
             [ 'general', __( 'General', 'eri-file-library' ), '' ],
+            [ 'taxonomies', __( 'Taxonomies', 'eri-file-library' ), '' ],
             [ 'format', __( 'Formatting', 'eri-file-library' ), '' ],
             [ 'structure', __( 'Structure', 'eri-file-library' ), '' ],
             [ 'tracking', __( 'Tracking', 'eri-file-library' ), '' ],
@@ -227,14 +232,6 @@ class Settings {
                 'comments'  => '<br><em>' . __( 'Requirements can be set up on files to require specific roles or a meta key to download them. If no requirements are set, everyone (including logged-out users) can download them. If requirements are set and the user does not meet the requirements, this message will display instead. HTML is allowed.', 'eri-file-library' ) . '</em>',
                 'default'   => '<em>' . __( 'You do not have permission to access this file.', 'eri-file-library' ) . '</em>'
             ],
-            [ 
-                'key'       => $this->option_add_taxonomies, 
-                'title'     => __( 'Additional Taxonomies', 'eri-file-library' ), 
-                'type'      => 'text', 
-                'sanitize'  => 'sanitize_text_field', 
-                'section'   => 'general', 
-                'comments'  => '<br><em>' . __( 'Optionally add existing taxonomies here by including their slugs in lowercase separated by commas (e.g. category, post_tag).', 'eri-file-library' ) . '</em>'
-            ],
             [
                 'key'       => $this->option_combine_rate_limiter,
                 'title'     => __( 'Combine All Downloads for Rate Limiting', 'eri-file-library' ),
@@ -242,6 +239,30 @@ class Settings {
                 'sanitize'  => [ $this, 'sanitize_checkbox' ],
                 'section'   => 'general',
                 'comments'  => '<br><em>' . __( 'Controls how the download rate limiter is applied. When unchecked, each file is tracked separately (per-file limits). When checked, all downloads are combined, and the limit applies across all files together.', 'eri-file-library' ) . '</em>'
+            ],
+            [
+                'key'       => $this->option_disable_resource_types,
+                'title'     => __( 'Disable Resource Types', 'eri-file-library' ),
+                'type'      => 'checkbox',
+                'sanitize'  => [ $this, 'sanitize_checkbox' ],
+                'section'   => 'taxonomies',
+                'comments'  => '<br><em>' . __( 'Removes the Resource Types taxonomy.', 'eri-file-library' ) . '</em>',
+            ],
+            [
+                'key'       => $this->option_disable_target_audiences,
+                'title'     => __( 'Disable Target Audiences', 'eri-file-library' ),
+                'type'      => 'checkbox',
+                'sanitize'  => [ $this, 'sanitize_checkbox' ],
+                'section'   => 'taxonomies',
+                'comments'  => '<br><em>' . __( 'Removes the Target Audiences taxonomy.', 'eri-file-library' ) . '</em>',
+            ],
+            [ 
+                'key'       => $this->option_add_taxonomies, 
+                'title'     => __( 'Additional Taxonomies', 'eri-file-library' ), 
+                'type'      => 'text', 
+                'sanitize'  => 'sanitize_text_field', 
+                'section'   => 'taxonomies', 
+                'comments'  => '<br><em>' . __( 'Optionally add existing taxonomies here by including their slugs in lowercase separated by commas (e.g. category, post_tag).', 'eri-file-library' ) . '</em>'
             ],
             [ 
                 'key'       => $this->option_pre_title, 
@@ -330,12 +351,29 @@ class Settings {
                 'comments'  => '<br><em>' . __( 'By default, links use <code>#</code> as the URL to conceal the file path. Users must click the links to download files, which ensures downloads are tracked. Enabling this setting will display the full file URL in the link, allowing direct file access. However, if users right-click and save the file, the download will not be tracked. This option is intended for those who use the plugin primarily for file organization rather than tracking.', 'eri-file-library' ) . '</em>'
             ],
             [ 
+                'key'       => $this->option_file_shortcode_class, 
+                'title'     => __( 'File Shortcode Class', 'eri-file-library' ), 
+                'type'      => 'text', 
+                'sanitize'  => 'sanitize_text_field', 
+                'section'   => 'structure', 
+                'comments'  => '<br><em>' . __( 'Change the main class applied to the file shortcode output.', 'eri-file-library' ),
+                'default'   => 'erifl-file'
+            ],
+            [ 
                 'key'       => $this->option_tracking, 
                 'title'     => __( 'Enable User Tracking', 'eri-file-library' ),
                 'type'      => 'checkbox',
                 'sanitize'  => [ $this, 'sanitize_checkbox' ],
                 'section'   => 'tracking',
                 'comments'  => '<em>' . __( 'Logs each download for you to see which users downloaded them with timestamps. Disabling this after already logging some data will not result in the data being lost.', 'eri-file-library' ) . '</em>'
+            ],
+            [ 
+                'key'       => $this->option_logged_out_tracking, 
+                'title'     => __( 'Track Logged-Out Users', 'eri-file-library' ),
+                'type'      => 'checkbox',
+                'sanitize'  => [ $this, 'sanitize_checkbox' ],
+                'section'   => 'tracking',
+                'comments'  => '<em>' . __( 'By default, only logged-in users are tracked. Enabling this will also track downloads by logged-out users. Since there is no user ID to associate with the download, it will be logged with a user ID of 0 and an IP address if available.', 'eri-file-library' ) . '</em>'
             ],
             [ 
                 'key'       => $this->option_delete_table, 
@@ -477,14 +515,23 @@ class Settings {
      * @return void
      */
     public function settings_field_checkbox( $args ) {
-        $value = get_option( $args[ 'name' ] );
-        $comments = isset( $args[ 'comments' ] ) ? $args[ 'comments' ] : '';
+        $option_name = $args[ 'name' ];
+        $dummy = '__NOT_SET__';
+        $value = get_option( $option_name, $dummy );
+
+        if ( $value === $dummy ) {
+            $value = isset( $args[ 'default' ] ) ? $args[ 'default' ] : 0;
+        }
+
+        $comments = $args[ 'comments' ] ?? '';
+        $label = $args[ 'label' ] ?? '';
         ?>
-            <label>
-                <input type="checkbox" id="<?php echo esc_attr( $args[ 'name' ] ); ?>" name="<?php echo esc_attr( $args[ 'name' ] ); ?>" <?php checked( $value, 1 ) ?> /> <?php echo isset( $args[ 'label' ] ) ? esc_html( $args[ 'label' ] ) : ''; ?> <?php echo wp_kses_post( $comments ); ?>
-            </label>
+        <label>
+            <input type="checkbox" id="<?php echo esc_attr( $option_name ); ?>" name="<?php echo esc_attr( $option_name ); ?>" value="1" <?php checked( $value, 1 ); ?> /> <?php echo esc_html( $label ); ?> <?php echo wp_kses_post( $comments ); ?>
+        </label>
         <?php
     } // End settings_field_checkbox()
+
 
 
     /**

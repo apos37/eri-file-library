@@ -341,7 +341,6 @@ class ListTable extends WP_List_Table {
             $selected_terms = [];
             $start_date = '';
             $end_date = '';
-            $filter_keys = [];
             
             if ( isset( $_REQUEST[ '_wpnonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST[ '_wpnonce' ] ) ), $this->nonce ) ) {
                 $selected_file = isset( $_GET[ 'file' ] ) ? absint( wp_unslash( $_GET[ 'file' ] ) ) : '';
@@ -352,10 +351,16 @@ class ListTable extends WP_List_Table {
                 // Capture selected taxonomy terms
                 foreach ( get_taxonomies( [ 'object_type' => [ ( new PostType() )->post_type ] ], 'names' ) as $tax ) {
                     $selected_terms[ $tax ] = isset( $_GET[ $tax ] ) ? sanitize_key( wp_unslash( $_GET[ $tax ] ) ) : '';
-                    $filter_keys[] = $tax;
                 }
             }
         
+            $base_url = add_query_arg(
+                [
+                    'page'      => isset( $_GET[ 'page' ] ) ? sanitize_key( wp_unslash( $_GET[ 'page' ] ) ) : null,
+                    'post_type' => isset( $_GET[ 'post_type' ] ) ? sanitize_key( wp_unslash( $_GET[ 'post_type' ] ) ) : null,
+                ],
+                admin_url( 'edit.php' )
+            );
             ?>
             <div class="alignleft actions">
                 <select name="file" id="file_filter">
@@ -410,7 +415,7 @@ class ListTable extends WP_List_Table {
                 
                 <input type="submit" class="button" value="<?php echo esc_html__( 'Filter', 'eri-file-library' ); ?>"/>
 
-                <a href="<?php echo esc_url( remove_query_arg( $filter_keys ) ); ?>" class="button"><?php echo esc_html__( 'Clear Filters', 'eri-file-library' ); ?></a>
+                <a href="<?php echo esc_url( $base_url ); ?>" class="button"><?php echo esc_html__( 'Clear Filters', 'eri-file-library' ); ?></a>
             </div>
             <?php
         }

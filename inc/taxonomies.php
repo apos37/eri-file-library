@@ -67,8 +67,18 @@ class Taxonomies {
 
 		// Taxonomies
 		$this->taxonomy_formats = sanitize_key( apply_filters( 'erifl_taxonomy_formats', 'erifl-formats' ) );
-		$this->taxonomy_resource_types = sanitize_key( apply_filters( 'erifl_taxonomy_resource_types', 'erifl-resource-types' ) );
-		$this->taxonomy_target_audiences = sanitize_key( apply_filters( 'erifl_taxonomy_target_audiences', 'erifl-target-audiences' ) );
+
+		if ( ! get_option( (new Settings())->option_disable_resource_types ) ) {
+			$this->taxonomy_resource_types = sanitize_key( apply_filters( 'erifl_taxonomy_resource_types', 'erifl-resource-types' ) );
+		} else {
+			$this->taxonomy_resource_types = false;
+		}
+
+		if ( ! get_option( (new Settings())->option_disable_target_audiences ) ) {
+			$this->taxonomy_target_audiences = sanitize_key( apply_filters( 'erifl_taxonomy_target_audiences', 'erifl-target-audiences' ) );
+		} else {
+			$this->taxonomy_target_audiences = false;
+		}
 
     } // End __construct()
 

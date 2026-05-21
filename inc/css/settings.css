@@ -1,5 +1,7 @@
-h2 { 
-    margin: 3rem 0 1rem 0; 
+#wpbody-content .wrap h2 {
+    margin-top: 3rem !important;
+    margin: 3rem 0 1rem 0 !important;
+    font-size: 1.5em !important;
 }
 
 #example {

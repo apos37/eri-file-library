@@ -1,21 +1,51 @@
 jQuery( $ => {
     // console.log( 'ERI File Library JS Loaded...' );
 
-    $( 'a.erifl-file, div.erifl-file a' ).on( 'click', function( e ) {
+    // Get the dynamic class from localized data
+    const fileClass = eri_file_library.file_class;
+    
+    // Create the dynamic selector (e.g., "a.my-custom-class, div.my-custom-class a")
+    const fileSelector = `a.${fileClass}, div.${fileClass} a`;
+
+    // Track inflight requests to prevent duplicate tracking
+    const inflightRequests = {};
+    const cooldownUntil = {};
+    const cooldownMs = 1500;
+
+    // Handle file link clicks
+    $( document ).on( 'click', fileSelector, function( e ) {
         e.preventDefault();
 
-        // Gather data
         let fileID, type, fileElement;
 
-        if ( $( this ).is( 'a.erifl-file' ) ) {
+        if ( $( this ).is( `a.${fileClass}` ) ) {
             fileID = $( this ).data( 'file' );
             type = $( this ).data( 'type' );
             fileElement = $( this );
         } else {
-            fileID = $( this ).closest( '.erifl-file' ).data( 'file' );
-            type = $( this ).closest( '.erifl-file' ).data( 'type' );
-            fileElement = $( this ).closest( '.erifl-file' );
+            fileID = $( this ).closest( `.${fileClass}` ).data( 'file' );
+            type = $( this ).closest( `.${fileClass}` ).data( 'type' );
+            fileElement = $( this ).closest( `.${fileClass}` );
         }
+
+        if ( !fileID ) {
+            return;
+        }
+
+        let now = Date.now();
+
+        if ( inflightRequests[ fileID ] ) {
+            return;
+        }
+
+        if ( cooldownUntil[ fileID ] && now < cooldownUntil[ fileID ] ) {
+            return;
+        }
+
+        inflightRequests[ fileID ] = true;
+        cooldownUntil[ fileID ] = now + cooldownMs;
+
+        fileElement.css( 'pointer-events', 'none' );
 
         let nonce = eri_file_library.nonce;
         let href = $( this ).attr( 'href' );
@@ -77,12 +107,16 @@ jQuery( $ => {
                 }
             },
             complete: function() {
+                inflightRequests[ fileID ] = false;
 
-                // Increase count in the UI
+                setTimeout( function() {
+                    fileElement.css( 'pointer-events', '' );
+                }, cooldownMs );
+
                 let countElement;
-
                 let typesToIncrease = [ 'link', 'button', 'full', 'post' ];
-                if  ( !typesToIncrease.includes( type ) ) {
+
+                if ( !typesToIncrease.includes( type ) ) {
                     return;
                 }
 

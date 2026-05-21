@@ -104,9 +104,18 @@ class PostType {
             'meta_key_error_msg'          => $this->meta_key_error_msg,
         ];
 
-        // Loop through each meta key and apply the filter and sanitize
+        /**
+         * Allow developers to modify post type and meta keys.
+         *
+         * Filter: erifl_meta_keys
+         *
+         * @param array $keys Associative array of all keys.
+         */
+        $keys = apply_filters( 'erifl_meta_keys', $keys );
+
+        // Sanitize and assign each value
         foreach ( $keys as $key => $value ) {
-            $this->{$key} = sanitize_key( apply_filters( "erifl_{$key}", $value ) );
+            $this->{$key} = sanitize_key( $value );
         }
 
     } // End __construct()
@@ -736,8 +745,11 @@ class PostType {
 
         // Add it
         echo '<div>
-            <h3 style="font-size: 1.2rem;">' . esc_html__( 'File ID', 'eri-file-library' ) . ': ' . esc_attr( $post->ID ) . '</h3>
-            <p>' . esc_html__( 'This file can be displayed a number of ways using a single shortcode with different values for the "type" parameter', 'eri-file-library' ) . ': <span style="font-weight: bold;">[' . esc_attr( $shortcode_tag ) . ' id="' . esc_attr( $post->ID ) . '"' . esc_html( $this->admin_param() ) . ']</span></p>
+            <h3 style="font-size: 1.2rem;">' . esc_html__( 'File ID', 'eri-file-library' ) . ': <a href="#" class="click-to-copy">' . esc_attr( $post->ID ) . '</a>
+            <span class="click-to-copy-copied" style="display: none; background: yellow; font-weight: bold; padding: 3px 5px; margin-left: 10px;">' . __( 'Copied', 'eri-file-library' ) . '</span></h3>
+
+            <p>' . esc_html__( 'This file can be displayed a number of ways using a single shortcode with different values for the "type" parameter', 'eri-file-library' ) . ': <a href="#" class="click-to-copy" style="font-weight: bold;">[' . esc_attr( $shortcode_tag ) . ' id="' . esc_attr( $post->ID ) . '"' . esc_html( $this->admin_param() ) . ']</a><span class="click-to-copy-copied" style="display: none; background: yellow; font-weight: bold; padding: 3px 5px; margin-left: 10px;">' . __( 'Copied', 'eri-file-library' ) . '</span></p>
+
             <ul style="list-style: square !important; padding-left: 30px !important;">
                 <li>' . esc_html__( 'No "type" parameter will default to "link" type.', 'eri-file-library' ) . '</li>
                 <li>' . esc_html__( 'Available types', 'eri-file-library' ) . ': <code>"link"</code>, <code>"button"</code>, <code>"full"</code>, <code>"post"</code>, <code>"icon"</code>, <code>"title"</code>, <code>"description"</code>, <code>"count"</code></li>
@@ -823,6 +835,7 @@ class PostType {
 
         // The shortcode
         $shortcode = (new Settings())->shortcode_tag();
+        $target_id = get_the_ID();
 
         // Get the post types
         $post_types = get_post_types();
@@ -842,6 +855,11 @@ class PostType {
             'wp_global_styles',
             'wp_navigation',
             'cs_template',
+            'cs_footer',
+            'cs_header',
+            'cs_layout_single',
+            'cs_layout_archive',
+            'cs_layout',
             'cs_user_templates',
             'um_form',
             'um_directory',
@@ -865,7 +883,7 @@ class PostType {
         if ( $the_query->have_posts() ) {
 
             // Let's build the full shortcode we are looking for
-            $full_shortcode_prefix = '['.$shortcode;
+            // $full_shortcode_prefix = '['.$shortcode;
 
             // Start a list
             $results = '<p>' . __( 'The following posts and pages are currently using this file shortcode:', 'eri-file-library' ) . '</p>
@@ -881,32 +899,40 @@ class PostType {
                 // Get the post
                 $the_query->the_post();
 
+                $this_id = get_the_ID();
+
                 // Get the post content once
+                $content = get_post_field( 'post_content', $this_id );
                 $content = get_the_content();
                 // $content = apply_filters( 'the_content', get_the_content() ); // Alternative that can be used in hook
-                $content = wp_kses_post( apply_filters( 'erifl_where_used_content', $content ) );
+                $content = apply_filters( 'erifl_where_used_content', $content );
 
                 // Check if the content has this shortcode
-                if ( strpos( $content, $full_shortcode_prefix ) !== false ) {
+                // if ( strpos( $content, $full_shortcode_prefix ) !== false ) {
+                if ( has_shortcode( $content, $shortcode ) ) {
 
-                    // no posts found
-                    $found++;
+                    // Use Regex to find the specific ID attribute within that shortcode
+                    $pattern = get_shortcode_regex( [ $shortcode ] );
                     
-                    // The return the post
-                    $post_type =  ucfirst( get_post_type() );
-                    $post_status = get_post_status();
+                    if ( preg_match_all( '/' . $pattern . '/s', $content, $matches, PREG_SET_ORDER ) ) {
+                        foreach ( $matches as $match ) {
+                            $atts = shortcode_parse_atts( $match[ 3 ] );
+                            
+                            // Check if 'id' exists in this instance and matches our target
+                            if ( isset( $atts[ 'id' ] ) && (int) $atts[ 'id' ] === (int) $target_id ) {
+                                $found++;
+                                $post_type      = ucfirst( get_post_type() );
+                                $post_status    = get_post_status();
+                                $status_map     = [ 'publish' => 'Published', 'draft' => 'Draft', 'private' => 'Private', 'archive' => 'Archived' ];
+                                $current_status = $status_map[ $post_status ] ?? ucfirst( $post_status );
 
-                    if ( $post_status == 'publish' ) {
-                        $current_status = 'Published';
-                    } elseif ( $post_status == 'draft' ) {
-                        $current_status = 'Draft';
-                    } elseif ( $post_status == 'private' ) {
-                        $current_status = 'Private';
-                    } elseif ( $post_status == 'archive' ) {
-                        $current_status = 'Archived';
+                                $results .= '<li><a href="' . get_the_permalink() . '" target="_blank">' . get_the_title() . '</a> (' . $post_type . ' ID: ' . $this_id . ' - ' . __( 'Status', 'eri-file-library' ) . ': ' . $current_status . ')</li>';
+                                
+                                // Break the inner loop so we don't list the same page twice if the shortcode is used twice
+                                break; 
+                            }
+                        }
                     }
-
-                    $results .= '<li><a href="'.get_the_permalink().'" target="_blank">' . get_the_title() . '</a> ('.$post_type.' ID: ' . get_the_ID() . ' - ' . __( 'Status', 'eri-file-library' ) . ': '.$current_status.')</li>';
                 }
             }
 
@@ -1059,22 +1085,33 @@ class PostType {
      */
     public function admin_columns( $columns ) {
         $TAXONOMIES = new Taxonomies();
-        $columns = array_merge( [
-            'cb'                                   => $columns[ 'cb' ],
-            'title'                                => __( 'Title', 'eri-file-library' ),
-            'post_modified'                        => __( 'Modified Date', 'eri-file-library' ),
-            'desc'                                 => __( 'Description', 'eri-file-library' ),
-            'url'                                  => __( 'URL', 'eri-file-library' ),
-            'shortcode'                            => __( 'Shortcode', 'eri-file-library' ),
-            'count'                                => __( 'Downloads', 'eri-file-library' ),
-            'filesize'                             => __( 'File Size', 'eri-file-library' ),
-            'requirements'                         => __( 'Requirements', 'eri-file-library' ),
-            $TAXONOMIES->taxonomy_resource_types   => __( 'Resource Types', 'eri-file-library' ),
-            $TAXONOMIES->taxonomy_target_audiences => __( 'Target Audiences', 'eri-file-library' ),
-            'thumb'                                => __( 'Image', 'eri-file-library' ),
-        ] );
-        
-        return $columns;
+        $SETTINGS   = new Settings();
+
+        $new_columns = [
+            'cb'           => $columns[ 'cb' ],
+            'title'        => __( 'Title', 'eri-file-library' ),
+            'post_modified'=> __( 'Modified Date', 'eri-file-library' ),
+            'desc'         => __( 'Description', 'eri-file-library' ),
+            'url'          => __( 'URL', 'eri-file-library' ),
+            'shortcode'    => __( 'Shortcode', 'eri-file-library' ),
+            'count'        => __( 'Downloads', 'eri-file-library' ),
+            'filesize'     => __( 'File Size', 'eri-file-library' ),
+            'requirements' => __( 'Requirements', 'eri-file-library' ),
+        ];
+
+        // Conditionally add taxonomy columns
+        if ( ! get_option( $SETTINGS->option_disable_resource_types ) ) {
+            $new_columns[ $TAXONOMIES->taxonomy_resource_types ] = __( 'Resource Types', 'eri-file-library' );
+        }
+
+        if ( ! get_option( $SETTINGS->option_disable_target_audiences ) ) {
+            $new_columns[ $TAXONOMIES->taxonomy_target_audiences ] = __( 'Target Audiences', 'eri-file-library' );
+        }
+
+        // Add thumb column at the end
+        $new_columns[ 'thumb' ] = __( 'Image', 'eri-file-library' );
+
+        return array_merge( $columns, $new_columns );
     } // End admin_columns()
 
 

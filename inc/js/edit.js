@@ -32,4 +32,25 @@ jQuery( $ => {
             titleInput.val( titleName );
         }
     } );
+
+
+    /**
+     * Copy to Clipboard
+     */
+    $( document ).on( 'click', '.click-to-copy', function( e ) {
+        e.preventDefault();
+        console.log( 'Clicked to copy' );
+        var $this = $( this );
+        var textToCopy = $this.text();
+        var $copiedSpan = $this.next( '.click-to-copy-copied' );
+
+        navigator.clipboard.writeText( textToCopy )
+            .then( function( ) {
+                $copiedSpan.fadeIn( 200 ).delay( 2000 ).fadeOut( 200 );
+            } )
+            .catch( function( err ) {
+                console.error( 'Failed to copy text: ', err );
+            } );
+    } );
+
 } );

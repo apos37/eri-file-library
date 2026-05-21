@@ -1,9 +1,25 @@
-h2 {
-    margin: 3rem 0 1rem 0;
+#wpbody-content .wrap h2 { 
+    margin: 3rem 0 1rem 0 !important;
+    margin-top: 3rem !important; 
 }
 
 .report-section {
+    clear: both;
     margin-bottom: 2rem;
+}
+
+.erifl-total-downloads {
+    border: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    padding: .75rem;
+    margin-top: 1rem;
+    border-radius: 0.25rem;
+    max-height: 300px;
+    overflow-y: auto;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    width: fit-content;
+    float: right;
 }
 
 #downloads-by-taxonomy {
@@ -65,4 +81,28 @@ h2 {
 #erifl-export-counts-btn {
     float: right;
     margin-top: -38px;
+}
+
+#erifl-report.is-loading {
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+}
+
+#erifl-report-filters {
+    margin-top: 2rem;
+    display: flex;
+    gap: 10px;
+}
+
+#erifl-report-notice {
+    margin-top: 1rem;
+    font-style: italic;
+    font-weight: 500;
+}
+
+#erifl-last-ran-info {
+    font-size: 0.73rem;
+    opacity: 0.7;
+    margin-top: 0;
 }

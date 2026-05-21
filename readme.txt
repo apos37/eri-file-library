@@ -2,9 +2,9 @@
 Contributors: apos37
 Tags: file manager, file sharing, download, tracking, links
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -58,6 +58,15 @@ We recommend using our [website support forum](https://pluginrx.com/support/plug
 9. Shortcodes with examples 4
 
 == Changelog ==
+= 1.1.3 =
+* Compatibility: Tested with WordPress 7.0
+* Fix: Where Used feature in file edit screen showing pages where all shortcodes are used, not just for this file
+
+= 1.1.2 =
+* Update: Added an option in settings to change the shortcode file class
+* Tweak: Added all classes to the erifl_classes hook
+* Update: Added filters to the reports page when tracking downloads
+
 = 1.1.1 =
 * Update: Added a rate limiter with an option in settings to combine limits to all downloads
 * Fix: Unauthorized access due to missing capability check in AJAX action (props Athiwat Tiprasaharn via WordFence Vulnerability Report)

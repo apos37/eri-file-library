@@ -220,43 +220,67 @@ class Downloads {
             }
 
             $tax_results = [];
+
             foreach ( $taxes as $tax ) {
                 $terms = get_the_terms( $record->file_id, $tax );
                 $result = '';
+
                 if ( !empty( $terms ) ) {
                     $family = [];
+
                     foreach ( $terms as $term ) {
                         $bold_parent = $term->parent == 0 ? 'bold' : 'normal';
-                        $link = sprintf( '<a href="%s" style="font-weight: %s">%s</a>',
+                        $link = sprintf(
+                            '<a href="%s" style="font-weight: %s">%s</a>',
                             esc_url( add_query_arg( [ 'post_type' => $POSTTYPE->post_type, $tax => $term->slug ], 'edit.php' ) ),
                             esc_attr( $bold_parent ),
                             esc_html( sanitize_term_field( 'name', $term->name, $term->term_id, $tax, 'display' ) )
                         );
+
                         if ( $term->parent == 0 ) {
-                            $family[ $term->term_id ][ 'parent' ] = $link;
+                            $family[ $term->term_id ]['parent'] = $link;
                         } else {
-                            $family[ $term->parent ][ $term->term_id ] = $link;
+                            if ( isset( $family[ $term->parent ] ) ) {
+                                $family[ $term->parent ][ $term->term_id ] = $link;
+                            } else {
+                                $family[ 'child_only_' . $term->term_id ][ $term->term_id ] = $link;
+                            }
                         }
                     }
+
                     foreach ( $family as $member ) {
                         $children = [];
                         foreach ( $member as $key => $child ) {
-                            if ( $key != 'parent' ) {
+                            if ( $key !== 'parent' ) {
                                 $children[] = $child;
                             }
                         }
-                        if ( !empty( $children ) ) {
-                            $incl_children = '<br>(<em>' . implode( ', ', $children ) . '</em>)<br><br>';
-                        } else {
-                            $incl_children = '';
+
+                        $parent_link = isset( $member['parent'] ) ? $member['parent'] : '';
+                        $children_output = !empty( $children ) ? '(<em>' . implode( ', ', $children ) . '</em>)' : '';
+
+                        if ( $parent_link ) {
+                            $result .= $parent_link;
+                            if ( $children_output ) {
+                                $result .= '<br>' . $children_output;
+                            }
+                        } elseif ( $children_output ) {
+                            $result .= $children_output;
                         }
-                        $result .= $member[ 'parent' ] . $incl_children;
+
+                        // Add a <br> after each parent+children or child-only group
+                        $result .= '<br>';
                     }
+
+                    // Remove trailing <br> if you want clean ending
+                    $result = rtrim( $result, '<br>' );
+
                 } else {
                     $result = '--';
                 }
+
                 $tax_results[ $tax ] = $result;
-            }            
+            }
 
             // Guests
             if ( $record->user_ip ) {

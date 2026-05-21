@@ -24,7 +24,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
 /**
  * Initiate the class
  */
-new Shortcodes();
+add_action( 'init', function() {
+	new Shortcodes();
+} );
 
 
 /**
@@ -290,8 +292,11 @@ class Shortcodes {
             }
         }
 
-        $classes = sanitize_text_field( apply_filters( 'erifl_classes', $classes, $file, $type ) );
-        $params = 'class="erifl-file ' . $type . ' ' . implode( ' ', $formats_array ) . ' ' . implode( ' ', $term_classes ) . ' ' . $classes . '" data-file="' . $file_id . '" data-type="' . $type . '" downloads="' . $count . '" rel="noopener noreferrer nofollow"';
+        // Build classes and data attributes
+        $shortcode_file_class = sanitize_text_field( get_option( $SETTINGS->option_file_shortcode_class, 'erifl-file' ) );
+        $all_classes = $shortcode_file_class . ' ' . $type . ' ' . implode( ' ', $formats_array ) . ' ' . implode( ' ', $term_classes ) . ' ' . $classes;
+        $all_classes = apply_filters( 'erifl_classes', $all_classes, $file, $type );
+        $params = 'class="' . $all_classes . '" data-file="' . $file_id . '" data-type="' . $type . '" downloads="' . $count . '" rel="noopener noreferrer nofollow"';
 
         // Output all
         if ( $type == 'full' ) {
@@ -520,7 +525,8 @@ class Shortcodes {
         wp_localize_script( $js_handle, ERIFL__TEXTDOMAIN, [
             'nonce'       => wp_create_nonce( $nonce ),
             'action'      => $nonce,
-            'ajaxurl'     => admin_url( 'admin-ajax.php' )
+            'ajaxurl'     => admin_url( 'admin-ajax.php' ),
+            'file_class'  => sanitize_text_field( get_option( (new Settings())->option_file_shortcode_class, 'erifl-file' ) )
         ] );
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( $js_handle );
